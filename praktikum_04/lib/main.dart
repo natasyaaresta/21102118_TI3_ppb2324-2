@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Dosen Wali "),
-              Text("NAP")
+              Text("AUT")
             ],
           ),
           SizedBox(height: 15,),
