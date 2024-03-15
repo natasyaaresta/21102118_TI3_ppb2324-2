@@ -4,15 +4,24 @@ void main() {
 }
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Hello World'),
+          title: Text('Aplikasi Pertemuan 3'),
         ),
-        body: Center(
-          child: Text('Hello World'),
+        body: Container(
+          margin: EdgeInsets.only(top: 100, left: 50),
+          color: Colors.amber,
+          child: Text(
+            "Hello World!",
+            style: TextStyle(
+              color: Colors.blueAccent,
+              fontSize: 50, 
+            ),
+          ),
         ),
       ),
     );
