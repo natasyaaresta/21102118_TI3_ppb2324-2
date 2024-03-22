@@ -7,6 +7,7 @@ class SecondPage extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
+    final data2 = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Second Page'),
@@ -15,7 +16,14 @@ class SecondPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(data ?? '', style: const TextStyle(fontSize: 20.0),),
+            Text(
+              data ?? '', 
+              style: const TextStyle(fontSize: 20.0),
+            ),
+            Text(
+              data2.toString() ?? '',
+              style: const TextStyle(fontSize: 20.0),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
