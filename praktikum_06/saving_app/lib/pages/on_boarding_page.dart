@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:saving_app/styles/color.dart';
 import 'package:saving_app/styles/text_style.dart';
 
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
+  static const nameRoute = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class OnBoardingPage extends StatelessWidget {
               height: 30,
             ),
             Container(
+              padding: EdgeInsets.all(26),
               constraints: BoxConstraints.expand(
                 height: 300,
                 width: 315,
@@ -38,6 +39,9 @@ class OnBoardingPage extends StatelessWidget {
                     'Welcome!', 
                     style: kHeading5.copyWith(color: kBlack),
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     'welcome to Fleet Finance, the easy way to improve your finances and help you control expenses and income',
                     style: kSubtitle2.copyWith(color: kSuvaGray),
@@ -47,7 +51,10 @@ class OnBoardingPage extends StatelessWidget {
                     height: 70,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context, '/main', (route) => false);
+                    },
                     child: Text (
                       'Get Started',
                       style: kButton1.copyWith(color: kWhite),
