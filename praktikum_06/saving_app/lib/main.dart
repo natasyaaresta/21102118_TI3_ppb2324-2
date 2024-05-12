@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:praktikum_06/pages/main_page.dart';
+import 'package:saving_app/pages/main_page.dart';
 
 import 'pages/on_boarding_page.dart';
 
