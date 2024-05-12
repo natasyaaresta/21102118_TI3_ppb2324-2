@@ -1,7 +1,7 @@
+import 'package:firebase_auth_project/ui/home_screen.dart';
+import 'package:firebase_auth_project/ui/login.dart';
+import 'package:firebase_auth_project/ui/register.dart';
 import 'package:flutter/material.dart';
-import 'package:praktikum6/ui/home_screen.dart';
-import 'package:praktikum6/ui/login.dart';
-import 'package:praktikum6/ui/register.dart';
 
 MaterialPageRoute _pageRoute(
     {required Widget body, required RouteSettings settings}) =>
