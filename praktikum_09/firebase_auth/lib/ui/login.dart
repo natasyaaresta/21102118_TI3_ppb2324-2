@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_project/bloc/login/login_cubit.dart';
+import 'package:firebase_auth_project/ui/home_screen.dart';
+import 'package:firebase_auth_project/ui/phone_auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../utils/routes.dart';
 
@@ -15,6 +19,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailEdc = TextEditingController();
   final passEdc = TextEditingController();
   bool passInvisible = false;
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await 
+  gUser!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+    return await 
+  FirebaseAuth.instance.signInWithCredential(credential).then(
+      (value) async => await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,9 +115,47 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10)
                     )
                   ),
-                  child: Text("Login", style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white
-                  ),)),
+              child: Text(
+                    "Login", 
+                    style: TextStyle(
+                    fontWeight: FontWeight.bold, 
+                    fontSize: 24, 
+                    color: Colors.white),
+                  )),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+              GestureDetector(
+                onTap: () {
+                  signInWithGoogle();
+                },
+                child: const CircleAvatar(
+                  radius: 20.0,
+                  backgroundImage: NetworkImage(
+                  'https://banner2.cleanpng.com/20180412/liq/kisspng-google-logo-google-search-advertising-google-5acf6363115c02.0087192015235408350711.jpg'),
+                ),
+              ),
+              const SizedBox(
+                width: 30.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push( 
+                    context, MaterialPageRoute( 
+                      builder: (context) => PhoneAuthScreen()));
+                },
+                child: const CircleAvatar(
+                  radius: 20.0,
+                  backgroundImage: NetworkImage(
+                  'https://www.freepnglogos.com/uploads/logo-telepon-png/blue-circle-telepon-26.png'),
+                ),
+              )
+            ],
+          ),
+
               SizedBox(height: 25,),
               Row(
                     mainAxisAlignment: MainAxisAlignment.center, // Menengahkan elemen horizontal
