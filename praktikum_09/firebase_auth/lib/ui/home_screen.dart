@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_project/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+final _firestore = FirebaseFirestore.instance;
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -43,6 +46,60 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: 
+      _firestore.collection('tasks').orderBy('timestamp').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const CircularProgressIndicator();
+        }
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot 
+      document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                return SizedBox(
+                  height: 170.0,
+                  width: MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: Text(data['title'],
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20.0)),
+                            ),
+                            GestureDetector(
+                                onTap: () {},
+                                child: Icon(Icons.more_vert_outlined))
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(data['note'],
+                            textAlign: TextAlign.justify,
+                            maxLines: 5,
+                            style: const TextStyle(fontSize: 17.0)),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -75,8 +132,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               MediaQuery.of(context).viewInsets.bottom),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          child: ElevatedButton(
-                              onPressed: () {},
+                          child: 
+                          ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    DocumentReference docRef = await 
+                          _firestore.collection('tasks').add({
+                                      'title': titleController.text,
+                                      'note': noteController.text,
+                                      'timestamp':
+                                          FieldValue.serverTimestamp(),
+                                    });
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Note ditambahkan')),
+                                    );
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      SnackBar(content: Text('$e')),
+                                    );
+                                  }
+                                }
+                              },
                               child: const Text('Save'))))
                       ],
                     ),
